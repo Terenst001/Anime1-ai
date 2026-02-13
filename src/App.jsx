@@ -250,6 +250,12 @@ return (
 }
 .sidebar-trigger-handle:active { width: 20px; background: ${theme.accent}; }
 
+.mobile-back-btn {
+    display: flex; align-items: center; gap: 10px; padding: 15px; border: 1px solid ${theme.accent}44;
+    border-radius: 4px; color: ${theme.accent}; font-size: 0.6rem; font-weight: 900; margin-bottom: 20px;
+    background: ${theme.accent}11;
+}
+
 @media (max-width: 768px) {
 .main-nav { padding: 0 10px; height: 60px; justify-content: center; gap: 10px; }
 .nav-links { gap: 10px; }
@@ -362,6 +368,13 @@ return (
 <div className="mobile-overlay" onClick={() => setIsSidebarOpen(false)} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 998, display: isSidebarOpen ? 'block' : 'none' }} />
 
 <aside className="sidebar">
+    {/* BACK BUTTON IN SIDEBAR FOR MOBILE ONLY */}
+    {isMobile && (
+        <button className="mobile-back-btn cyber-anim-btn" onClick={() => setView('home')}>
+            <ArrowLeft size={16}/> TERMINATE_SYNC
+        </button>
+    )}
+
     <div style={{display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '5px', color: theme.accent}}>
         <Database size={16}/>
         <span style={{fontSize: '0.6rem', fontWeight: 900}}>NEURAL_SLOTS</span>
@@ -418,7 +431,13 @@ return (
 
 <main className="chat-main" style={{ backgroundImage: `url(${currentChatBg})`, backgroundSize: 'cover' }}>
 <div style={{ display: 'flex', alignItems: 'center', gap: '15px', background: 'rgba(0,0,0,0.6)', padding: '12px 20px', backdropFilter: 'blur(15px)', borderBottom: `1px solid ${theme.accent}33`, zIndex: 10 }}>
-<button className="cyber-anim-btn" onClick={() => setView('home')} title="Back to Base"><ArrowLeft size={24}/></button>
+    {/* DESKTOP ONLY BACK BUTTON */}
+    {!isMobile && (
+        <button className="cyber-anim-btn" onClick={() => setView('home')} title="Back to Base">
+            <ArrowLeft size={24}/>
+        </button>
+    )}
+    
 <img src={activePersona.avatar} style={{width: 35, height: 35, borderRadius: '2px', border: `2px solid ${theme.accent}`}} alt="" />
 <div style={{flex: 1, textAlign: 'left'}}>
 <h3 style={{ fontSize: '0.85rem', color: theme.accent, fontWeight: 900 }}>{activePersona.name}</h3>
