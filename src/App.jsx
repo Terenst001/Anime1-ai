@@ -249,11 +249,11 @@ return (
 .chat-container { padding-top: 0; }
 .about-grid { grid-template-columns: 1fr; }
 
-/* DOUBLED HEIGHT CHATTING BAR FOR MOBILE */
+/* DOUBLED HEIGHT AND POSITIONED HIGHER FOR MOBILE */
 .input-area { 
-    padding: 35px 20px; 
-    border-radius: 25px; 
-    margin: 10px; 
+    padding: 55px 20px; 
+    border-radius: 30px; 
+    margin: 10px 15px 45px 15px; 
 }
 }
 `}</style>
