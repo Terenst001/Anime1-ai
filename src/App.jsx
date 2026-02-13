@@ -55,7 +55,7 @@ const App = () => {
 const [view, setView] = useState('home');
 const [currentTheme, setCurrentTheme] = useState('cyber');
 const [messages, setMessages] = useState([{ role: 'model', text: 'Neural link established. Awaiting input...' }]);
-const [chatSessions, setChatSessions] = useState([]); // List of saved conversations
+const [chatSessions, setChatSessions] = useState([]); 
 const [currentSessionId, setCurrentSessionId] = useState(Date.now());
 const [input, setInput] = useState('');
 const [loading, setLoading] = useState(false);
@@ -122,7 +122,6 @@ const callGemini = async (userPrompt) => {
         const newMessages = [...messages, { role: 'user', text: userPrompt }, { role: 'model', text }];
         setMessages(newMessages);
 
-        // Update or Add to Sessions list
         setChatSessions(prev => {
             const exists = prev.find(s => s.id === currentSessionId);
             if (exists) {
@@ -212,7 +211,6 @@ return (
 .persona-btn { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 15px; border-radius: 4px; cursor: pointer; transition: 0.3s; text-align: left; }
 .persona-btn.active { border-color: ${theme.accent}; background: ${theme.accent}11; border-left: 4px solid ${theme.accent}; }
 
-/* HISTORY STYLING */
 .history-item { 
     display: flex; align-items: center; justify-content: space-between; padding: 12px; 
     border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: 0.2s;
@@ -234,10 +232,23 @@ return (
 .input-area { background: rgba(0,0,0,0.7); border: 1px solid ${theme.accent}33; padding: 15px 25px; margin: 15px; border-radius: 100px; backdrop-filter: blur(20px); display: flex; align-items: center; gap: 15px; }
 .input-area input { background: transparent; border: none; outline: none; color: white; flex: 1; font-size: 0.9rem; }
 
-.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px; width: 100%; text-align: left; }
-.about-card { background: rgba(255,255,255,0.03); border: 1px solid ${theme.accent}33; padding: 20px; border-radius: 4px; border-left: 3px solid ${theme.accent}; }
-.about-card h4 { font-size: 0.7rem; color: ${theme.accent}; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; font-weight: 900; }
-.about-card p { font-size: 0.65rem; color: #bbb; line-height: 1.6; font-family: 'JetBrains Mono', monospace; }
+/* SIDEBAR TRIGGER HANDLE */
+.sidebar-trigger-handle {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 25%;
+    width: 12px;
+    height: 120px;
+    background: linear-gradient(to right, ${theme.accent}, transparent);
+    border-left: 2px solid ${theme.accent};
+    z-index: 1002;
+    cursor: pointer;
+    box-shadow: 5px 0 15px ${theme.accent}44;
+    border-radius: 0 4px 4px 0;
+    transition: 0.3s;
+}
+.sidebar-trigger-handle:active { width: 20px; background: ${theme.accent}; }
 
 @media (max-width: 768px) {
 .main-nav { padding: 0 10px; height: 60px; justify-content: center; gap: 10px; }
@@ -245,16 +256,9 @@ return (
 .nav-links button { font-size: 0.55rem; padding: 5px; }
 .glitch-title { font-size: 14vw; margin-top: 40px; }
 .sidebar { position: fixed; left: 0; top: 0; bottom: 0; transform: translateX(${isSidebarOpen ? '0' : '-100%'}); width: 280px; }
-.mobile-nav-trigger { display: block !important; color: ${theme.accent}; }
+.sidebar-trigger-handle { display: ${isSidebarOpen ? 'none' : 'block'}; }
 .chat-container { padding-top: 0; }
-.about-grid { grid-template-columns: 1fr; }
-
-/* DOUBLED HEIGHT AND POSITIONED HIGHER FOR MOBILE */
-.input-area { 
-    padding: 55px 20px; 
-    border-radius: 30px; 
-    margin: 10px 15px 45px 15px; 
-}
+.input-area { padding: 55px 20px; border-radius: 30px; margin: 10px 15px 45px 15px; }
 }
 `}</style>
 
@@ -262,6 +266,9 @@ return (
 <div className="scanlines" />
 
 {view !== 'chat' && <Navigation />}
+
+{/* SIDEBAR HANDLE FOR MOBILE */}
+{view === 'chat' && <div className="sidebar-trigger-handle" onClick={() => setIsSidebarOpen(true)} />}
 
 {/* 1. HOME VIEW */}
 {view === 'home' && (
@@ -412,7 +419,6 @@ return (
 <main className="chat-main" style={{ backgroundImage: `url(${currentChatBg})`, backgroundSize: 'cover' }}>
 <div style={{ display: 'flex', alignItems: 'center', gap: '15px', background: 'rgba(0,0,0,0.6)', padding: '12px 20px', backdropFilter: 'blur(15px)', borderBottom: `1px solid ${theme.accent}33`, zIndex: 10 }}>
 <button className="cyber-anim-btn" onClick={() => setView('home')} title="Back to Base"><ArrowLeft size={24}/></button>
-{isMobile && <button className="mobile-nav-trigger" onClick={() => setIsSidebarOpen(true)}><Menu size={24}/></button>}
 <img src={activePersona.avatar} style={{width: 35, height: 35, borderRadius: '2px', border: `2px solid ${theme.accent}`}} alt="" />
 <div style={{flex: 1, textAlign: 'left'}}>
 <h3 style={{ fontSize: '0.85rem', color: theme.accent, fontWeight: 900 }}>{activePersona.name}</h3>
