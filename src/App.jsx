@@ -248,6 +248,13 @@ return (
 .mobile-nav-trigger { display: block !important; color: ${theme.accent}; }
 .chat-container { padding-top: 0; }
 .about-grid { grid-template-columns: 1fr; }
+
+/* DOUBLED HEIGHT CHATTING BAR FOR MOBILE */
+.input-area { 
+    padding: 35px 20px; 
+    border-radius: 25px; 
+    margin: 10px; 
+}
 }
 `}</style>
 
